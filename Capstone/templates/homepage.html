@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #e0eafc, #cfdef3);
+            height: 100vh;
+            overflow: hidden;
+        }
+        .leftsidebar, .rightsidebar {
+            width: 250px;
+            background: #34495e;
+            color: #ecf0f1;
+            padding: 20px;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .leftsidebar {
+            border-right: 2px solid #2980b9;
+        }
+        .rightsidebar {
+            border-left: 2px solid #2980b9;
+        }
+        .student {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: #2c3e50;
+            cursor: pointer;
+            position: relative;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ecf0f1;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        .student.active .circle {
+            background-color: #1abc9c;
+        }
+        .rightsidebar .student {
+            cursor: default;
+        }
+        .rightsidebar .student:hover {
+            background: none;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            background: #ecf0f1;
+        }
+        .content h1 {
+            color: #2980b9;
+            margin-bottom: 20px;
+        }
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .attendance-table th, .attendance-table td {
+            border: 1px solid #34495e;
+            padding: 10px;
+            text-align: center;
+        }
+        .attendance-table th {
+            background: #34495e;
+            color: #ecf0f1;
+        }
+        .upload-section {
+            margin-top: 20px;
+        }
+        button, input[type="file"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #2980b9;
+            color: #ecf0f1;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1abc9c;
+        }
+        .hidden {
+            display: none;
+        }
+        .status-icon {
+            font-size: 20px;
+            margin-left: 10px;
+            color: #e74c3c;
+        }
+        .status-icon.present {
+            color: #27ae60;
+        }
+        #preview-image {
+            margin-top: 20px;
+            max-width: 200px;
+            max-height: 200px;
+            border: 2px solid #2980b9;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="leftsidebar">
+        <h3>Past Attendance Record</h3>
+        <button onclick="goHome()">🏠 Back to Home</button>
+        {% for record in records %}
+        <tr>
+            <div class="student" onclick="showAttendance({{ record['first_name'] }}, this)">
+                <div class="circle"></div>
+                <span>{{ record['first_name'] }}</span>
+            </div>
+        </tr>
+        {% endfor %}
+    </div>
+
+    <div class="content">
+        <div id="home-screen">
+            <h1 id="student-name">Attendance Tracker</h1>
+            <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="upload-section">
+                    <h3>Upload Image for Attendance</h3>
+                    <input type="file" id="upload" name="image" accept="image/*">
+                    <img id="preview-image" class="hidden" alt="Uploaded Preview">
+                    <button type="submit" id="submit-button" class="hidden">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="attendance-screen" class="hidden">
+            <h1 id="attendance-student-name"></h1>
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-record">
+                    <tr><td colspan="2">No record selected</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="rightsidebar">
+        <h3>Current Attendance</h3>
+        <div class="student">
+            <span>John Doe - #001</span><span class="status-icon" id="status-john">❌</span>
+        </div>
+        <div class="student">
+            <span>Jane Smith - #002</span><span class="status-icon" id="status-jane">❌</span>
+        </div>
+    </div>
+
+    <script>
+        function showAttendance(studentName, element) {
+            document.getElementById("home-screen").classList.add("hidden");
+            document.getElementById("attendance-screen").classList.remove("hidden");
+            document.getElementById("attendance-student-name").innerText = studentName;
+
+            document.querySelectorAll('.leftsidebar .student').forEach(student => {
+                student.classList.remove("active");
+            });
+            element.classList.add("active");
+        }
+
+        function goHome() {
+            document.getElementById("home-screen").classList.remove("hidden");
+            document.getElementById("attendance-screen").classList.add("hidden");
+
+            document.querySelectorAll('.leftsidebar .student').forEach(student => {
+                student.classList.remove("active");
+            });
+        }
+
+        document.getElementById("upload").addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById("preview-image").src = e.target.result;
+                    document.getElementById("preview-image").classList.remove("hidden");
+                    document.getElementById("submit-button").classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
