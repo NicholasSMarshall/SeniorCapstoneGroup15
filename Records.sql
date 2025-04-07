@@ -1,3 +1,6 @@
+-- Host: local instance 3306
+-- Password: NPstar123
+
 -- Create the database
 CREATE DATABASE IF NOT EXISTS RECORDS;
 USE RECORDS;
