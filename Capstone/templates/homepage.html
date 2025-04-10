@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
         }
+    
         body {
             display: flex;
             font-family: Arial, sans-serif;
@@ -17,6 +18,7 @@
             height: 100vh;
             overflow: hidden;
         }
+    
         .leftsidebar, .rightsidebar {
             width: 250px;
             background: #34495e;
@@ -25,9 +27,11 @@
             height: 100vh;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
+    
         .leftsidebar {
             border-right: 2px solid #2980b9;
         }
+    
         .student {
             padding: 10px;
             margin-bottom: 10px;
@@ -37,31 +41,47 @@
             text-decoration: none;
             display: block;
         }
+    
         .student:hover {
             background-color: #1abc9c;
         }
+    
         .content {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 0 auto;
             padding: 20px;
-            background: #ecf0f1;
         }
+    
         .content h1 {
             color: #2980b9;
             margin-bottom: 20px;
         }
+    
         .attendance-table {
-            width: 100%;
+            margin-top: 20px;
             border-collapse: collapse;
+            width: 80%;
+            max-width: 700px;
         }
+    
         .attendance-table th, .attendance-table td {
             border: 1px solid #34495e;
             padding: 10px;
             text-align: center;
         }
+    
         .attendance-table th {
             background: #34495e;
             color: #ecf0f1;
         }
+    
+        .upload-section {
+            margin-top: 20px;
+        }
+    
         button {
             padding: 10px;
             border-radius: 5px;
@@ -72,10 +92,29 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
+    
         button:hover {
             background-color: #1abc9c;
         }
+    
+        .student-entry {
+            cursor: pointer;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            color: white;
+            transition: background-color 0.2s;
+        }
+    
+        .student-entry.present {
+            background-color: #28a745; /* green */
+        }
+    
+        .student-entry.absent {
+            background-color: #dc3545; /* red */
+        }
     </style>
+    
 </head>
 <body>
     <!-- Left Sidebar -->
@@ -141,16 +180,13 @@
                     
                     if (file) {
                         const reader = new FileReader();
-                        
-                        // Once the file is read, display it in the preview image element
                         reader.onload = function(e) {
                             const previewImage = document.getElementById("preview-image");
-                            previewImage.src = e.target.result; // Set the preview image source to the file
-                            previewImage.classList.remove("hidden"); // Show the image preview
-                            document.getElementById("submit-button").classList.remove("hidden"); // Show submit button
+                            previewImage.src = e.target.result;
+                            previewImage.classList.remove("hidden");
+                            document.getElementById("submit-button").classList.remove("hidden");
                         };
-                        
-                        // Read the file as a Data URL (base64 encoded string)
+
                         reader.readAsDataURL(file);
                     }
                 });
@@ -159,7 +195,43 @@
         {% endif %}
     </div>
 
+    <div class="rightsidebar">
+        <h3>Current Attendance Record</h3>
+    
+        <p id="present-count">Present: 0</p>
+    
+        {% if students %}
+            <ul id="student-list" style="list-style: none; padding-left: 0;">
+                {% for student in students %}
+                    <li class="student-entry absent" onclick="toggleAttendance(this)">
+                        {{ student['first_name'] }} {{ student['last_name'] }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <button onclick="submitAttendance()" style="margin-top: 10px;">Submit Final Attendance</button>
+        {% else %}
+            <p>No students found.</p>
+        {% endif %}
+    </div>
 
+    <script>
+        function toggleAttendance(element) {
+            element.classList.toggle('present');
+            element.classList.toggle('absent');
+            updatePresentCount();
+        }
+    
+        function updatePresentCount() {
+            const students = document.querySelectorAll('.student-entry');
+            let count = 0;
+            students.forEach(student => {
+                if (student.classList.contains('present')) {
+                    count++;
+                }
+            });
+            document.getElementById('present-count').innerText = `Present: ${count}`;
+        }
+    </script>
 
 </body>
 </html>
