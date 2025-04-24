@@ -16,10 +16,11 @@ CREATE TABLE Students (
 
 -- Create Courses table
 CREATE TABLE Courses (
-    course_id INT PRIMARY KEY not null,
+    course_id INT not null,
     course_name VARCHAR(100) not null,
-    instructor_id INT UNIQUE not null,
-    instructor_name VARCHAR(100) not null
+    instructor_id INT not null,
+    instructor_name VARCHAR(100) not null,
+    PRIMARY KEY (course_id, instructor_id)
 );
 
 -- Create Attendance table
@@ -32,8 +33,7 @@ CREATE TABLE Attendance (
     date DATE,
     time TIME,
     FOREIGN KEY (r_number) REFERENCES Students(r_number),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id),
-    FOREIGN KEY (instructor_id) REFERENCES Courses(instructor_id)
+    FOREIGN KEY (course_id, instructor_id) REFERENCES Courses(course_id, instructor_id)
 );
 
 -- INSERT into Student 
@@ -108,6 +108,3 @@ SELECT
     date, 
     time 
 FROM Attendance;
-
-
-
