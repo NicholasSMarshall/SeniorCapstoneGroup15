@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
         }
-    
+
         body {
             display: flex;
             font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
             height: 100vh;
             overflow: hidden;
         }
-    
+
         .leftsidebar, .rightsidebar {
             width: 250px;
             background: #34495e;
@@ -27,11 +27,11 @@
             height: 100vh;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-    
+
         .leftsidebar {
             border-right: 2px solid #2980b9;
         }
-    
+
         .student {
             padding: 10px;
             margin-bottom: 10px;
@@ -41,11 +41,11 @@
             text-decoration: none;
             display: block;
         }
-    
+
         .student:hover {
             background-color: #1abc9c;
         }
-    
+
         .content {
             display: flex;
             flex-direction: column;
@@ -54,34 +54,34 @@
             margin: 0 auto;
             padding: 20px;
         }
-    
+
         .content h1 {
             color: #2980b9;
             margin-bottom: 20px;
         }
-    
+
         .attendance-table {
             margin-top: 20px;
             border-collapse: collapse;
             width: 80%;
             max-width: 700px;
         }
-    
+
         .attendance-table th, .attendance-table td {
             border: 1px solid #34495e;
             padding: 10px;
             text-align: center;
         }
-    
+
         .attendance-table th {
             background: #34495e;
             color: #ecf0f1;
         }
-    
+
         .upload-section {
             margin-top: 20px;
         }
-    
+
         button {
             padding: 10px;
             border-radius: 5px;
@@ -92,11 +92,11 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-    
+
         button:hover {
             background-color: #1abc9c;
         }
-    
+
         .student-entry {
             cursor: pointer;
             padding: 5px;
@@ -105,16 +105,16 @@
             color: white;
             transition: background-color 0.2s;
         }
-    
+
         .student-entry.present {
             background-color: #28a745; /* green */
         }
-    
+
         .student-entry.absent {
             background-color: #dc3545; /* red */
         }
     </style>
-    
+
 </head>
 <body>
     <!-- Left Sidebar -->
@@ -166,23 +166,23 @@
                         <div class="upload-section" style="display: flex; flex-direction: column; align-items: center;">
                             <h3>Upload Image for Attendance</h3>
                             <input type="file" id="upload" name="image" accept="image/*">
-                        
-                            <img id="preview-image" class="hidden" 
-                                 style="max-width: 300px; max-height: 300px; object-fit: contain; margin-top: 10px;" 
+
+                            <img id="preview-image" class="hidden"
+                                 style="max-width: 300px; max-height: 300px; object-fit: contain; margin-top: 10px;"
                                  alt="Uploaded Preview">
-                        
-                            <button type="submit" id="submit-button" class="hidden" 
+
+                            <button type="submit" id="submit-button" class="hidden"
                                     style="margin-top: 10px;">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
-            
+
             <script>
                 // JavaScript to handle image preview
                 document.getElementById("upload").addEventListener("change", function(event) {
                     const file = event.target.files[0];
-                    
+
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(e) {
@@ -196,20 +196,25 @@
                     }
                 });
             </script>
-            
+
         {% endif %}
     </div>
 
+
+
+
+    <!-- Only modified section of the right sidebar is shown below -->
     <div class="rightsidebar">
         <h3>Current Attendance Record</h3>
-    
         <p id="present-count">Present: 0</p>
-    
+
         {% if students %}
             <ul id="student-list" style="list-style: none; padding-left: 0;">
                 {% for student in students %}
-                    <li class="student-entry absent" onclick="toggleAttendance(this)">
-                        {{ student['first_name'] }} {{ student['last_name'] }}
+                    <li class="student-entry absent"
+                        data-rnumber="{{ student['r_number'] }}"
+                        onclick="toggleAttendance(this)">
+                        {{ student['first_name'] }} {{ student['last_name'] }} (R{{ student['r_number'] }})
                     </li>
                 {% endfor %}
             </ul>
@@ -219,24 +224,63 @@
         {% endif %}
     </div>
 
-    <script>
-        function toggleAttendance(element) {
-            element.classList.toggle('present');
-            element.classList.toggle('absent');
-            updatePresentCount();
-        }
-    
-        function updatePresentCount() {
-            const students = document.querySelectorAll('.student-entry');
-            let count = 0;
-            students.forEach(student => {
-                if (student.classList.contains('present')) {
-                    count++;
-                }
-            });
-            document.getElementById('present-count').innerText = `Present: ${count}`;
-        }
-    </script>
+
+<script>
+
+    console.log("JS loaded");
+
+    function toggleAttendance(element) {
+        element.classList.toggle('present');
+        element.classList.toggle('absent');
+        updatePresentCount();
+    }
+
+    function updatePresentCount() {
+        const students = document.querySelectorAll('.student-entry');
+        let count = 0;
+        students.forEach(student => {
+            if (student.classList.contains('present')) {
+                count++;
+            }
+        });
+        document.getElementById('present-count').textContent = "Present: " + count;
+    }
+
+    function submitAttendance() {
+        const presentStudents = [];
+        const absentStudents = [];
+        const allStudents = document.querySelectorAll('.student-entry');
+
+        allStudents.forEach(student => {
+            const rnumber = student.getAttribute('data-rnumber');
+            if (student.classList.contains('present')) {
+                presentStudents.push(rnumber);
+            } else {
+                absentStudents.push(rnumber);
+            }
+        });
+
+        fetch("/submit_attendance", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ present: presentStudents, absent: absentStudents })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Attendance submitted successfully!");
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+            alert("Error submitting attendance.");
+        });
+    }
+</script>
 
 </body>
 </html>
