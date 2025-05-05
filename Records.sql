@@ -43,12 +43,12 @@ INSERT INTO Students (r_number, first_name, middle_name, last_name, email) VALUE
 (11764742, 'Ayodeji', 'Joseph', 'Adeogun', 'aadeogun@ttu.edu'),
 (11772596, 'Nicholas', 'Scott', 'Marshall', 'nichmars@ttu.edu'),
 (11669553, 'Frank', 'NULL', 'Diabour', 'fdiabour@ttu.edu'),
-(11669554, 'First1', 'Middle1', 'Last1', 'email1@ttu.edu'), -- far left with graphic
-(11669555, 'First2', 'NULL', 'Last2', 'email2@ttu.edu'), -- hat and drinking can
-(11669556, 'First3', 'NULL', 'Last3', 'email3@ttu.edu'), -- diagonal matthew, brooding face
-(11669557, 'First4', 'Middle2', 'Last4', 'email4@ttu.edu'), -- hoodie and hat
-(11669558, 'First5', 'NULL', 'Last5', 'email5@ttu.edu'), -- brown hair
-(11669559, 'First6', 'Middle3', 'Last6', 'email6@ttu.edu'); -- white jacket and glasses
+(11669554, 'First1', 'Middle1', 'Last1', 'email1@ttu.edu'),
+(11669555, 'First2', 'NULL', 'Last2', 'email2@ttu.edu'),
+(11669556, 'First3', 'NULL', 'Last3', 'email3@ttu.edu'),
+(11669557, 'First4', 'Middle2', 'Last4', 'email4@ttu.edu'), 
+(11669558, 'First5', 'NULL', 'Last5', 'email5@ttu.edu'), 
+(11669559, 'First6', 'Middle3', 'Last6', 'email6@ttu.edu');
 
 -- INSERT into Courses
 INSERT INTO Courses (course_id, course_name, instructor_id, instructor_name) VALUES
