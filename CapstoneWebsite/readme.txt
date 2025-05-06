@@ -67,5 +67,36 @@ This opens a MySQL Console to interact with the backend database directly.
 
 For easier navigation and understanding of relationships, refer to the provided ER Diagram.
 
+👤 User Instructions
+Once the site is live:
+
+Launch the Website – Navigate to the live link after reloading.
+
+Left Sidebar – Shows a list of students. Clicking a name will display that student’s attendance history.
+
+Center Panel (Home) –
+
+Upload one or more images with student faces.
+
+Images will be processed, and attendance will be auto-marked.
+
+Right Sidebar – Displays student names:
+
+Red names = Not present.
+
+Green names = Detected as present by YOLO + DeepFace.
+
+You can manually change colors (toggle presence status).
+
+Submit Attendance –
+
+Once everyone is marked, click Submit.
+
+The system records the current state (green = present, red = absent).
+
+Only the latest submission counts — submitting again overrides the previous record.
+
+Review Attendance – Click any student’s name on the left to view their individual attendance log.
+
 ❓ Need Help?
 For any questions, issues, or clarifications, please feel free to reach out to our team. We're happy to assist!
