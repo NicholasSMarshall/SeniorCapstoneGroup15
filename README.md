@@ -10,7 +10,7 @@ The goal of this project is to create a secure, efficient facial recognition sys
 * Personnel check-ins
 * Secure login platforms
 
-The system uses Python, OpenCV, and DeepFace for recognition and integrates with a Flask web app and SQLite for data management.
+Both systems use Python, OpenCV, and DeepFace for recognition. The Localhost integrates with a Flask web app and SQLite for data management, while the website uses Pythonanywhere pulling from the stored files. 
 
 ---
 
@@ -22,88 +22,65 @@ The system uses Python, OpenCV, and DeepFace for recognition and integrates with
 ✅ Web-based UI using Flask + HTML/CSS/JS
 ✅ Excel attendance record generation
 ✅ Auto-detection and classification of students
-✅ Included presentation and final documentation
+✅ Included presentations and final documentations
 
 ---
 
 ## 🗂️ Repository Structure
 
 ```
-SeniorCapstoneWebsite/
+SeniorCapstoneWebsite - CapstoneWebsite
+├── Capstone                      # Main project directory:
+├── app.py                        # The backend of the web application (Flask-based). Interfaces with both the MySQL database and AI models.
+├── database                      # Stores face images recognized by YOLO and assigned an ID for DeepFace training.
+├── models                        # Contains the YOLO model we trained.
+├── recognized_faces              # Contains YOLO-detected faces not yet assigned an ID.
+├── static/attendance             # Stores images captured for attendance tracking. Useful for audits or corrections.
+├── templates                     # HTML frontend (with Jinja and JavaScript), calling API routes defined in app.py.
+├── uploads                       # Temporarily stores uploaded images before processing.
+
+
+SeniorCapstoneLocalhost - CapstoneApp
 ├── CaptureImages.py              # Captures face images for training
 ├── TrainModel.py                 # Trains the recognizer with captured images
-├── FaceRecognition.py           # CLI-based real-time face recognition
+├── FaceRecognition.py            # CLI-based real-time face recognition
 │
 ├── app.py                        # Web-based Flask app with attendance logic
 ├── students.xlsx                 # Student list (names should match image filenames)
-├── attendancesheet.xlsx         # Master attendance file (auto-generated)
+├── attendancesheet.xlsx          # Master attendance file (auto-generated)
 │
 ├── database/                     # Known face images (1 image per student)
 ├── uploads/                      # Temporary upload storage for test images
-├── recognized_faces/            # Cropped, recognized faces
-├── unrecognized_faces/          # Cropped, unrecognized faces
+├── recognized_faces/             # Cropped, recognized faces
+├── unrecognized_faces/           # Cropped, unrecognized faces
 ├── static/
-│   └── attendance/              # Annotated attendance images
+│   └── attendance/               # Annotated attendance images
 ├── templates/
-│   └── homepage.html            # Web interface
+│   └── homepage.html             # Web interface
 │
 ├── WebsiteDemo/
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
 │
-├── Records.sql                  # SQLite setup script
-├── Presentation.pdf             # Final capstone presentation
-├── SeniorCapstoneDocumentation.docx  # Project write-up
-└── README.md                    # This file
+├── Localhost Demo Files          # Link to the google drive of the files
+├── README.md                     # This file
+├── Records.sql                   # SQLite setup script
+└── Website Link for Demo         # Normal Link to the website 
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-### 🛠 Prerequisites
-
-Make sure the following are installed:
-
-* Python 3.9+
-* A webcam (internal/external)
-* SQLite or DB Browser for SQLite
-
-Install required Python libraries:
-
-```bash
-pip install Flask opencv-python deepface ultralytics pandas openpyxl XlsxWriter
-```
-
 ---
+Depending on which one you want to test, their prerequisites and steps will be in their respective directories
+├── CapstoneWebsite
+├── CapstoneApp
 
-### 🔧 Setup
+### 🧪 Running the Capstone App
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/RPGNorman/SeniorCapstoneWebsite.git
-   cd SeniorCapstoneWebsite
-   ```
-
-2. **Prepare the student database**
-
-   * Add one clear image per student to the `database/` folder.
-   * The filename (e.g., `Alice_Johnson.jpg`) should match exactly with the student’s name in `students.xlsx`.
-
-3. **Create `students.xlsx`**
-
-   ```plaintext
-   Student Name
-   Alice Johnson
-   Bob Smith
-   ...
-   ```
-
----
-
-### 🧪 Running the App
+Follow the prerequisites and steps in the directory
 
 ```bash
 python app.py
@@ -113,28 +90,23 @@ Visit `http://localhost:5000` in your browser.
 
 ---
 
+## 🧪 Running the Capstone Website
+
+Log in at www.pythonanywhere.com/user/rpgmoose/ with the password provided in the directory
+
+Normal website: https://www.pythonanywhere.com/user/rpgmoose/
+
+---
+
 ## 📷 How to Use
 
 1. Go to the homepage.
 2. Upload a group photo containing students.
 3. Recognized students will be marked in the image.
-4. Attendance is recorded in `attendancesheet.xlsx`.
+4. Attendance is stored in their respective files.
 5. Cropped recognized/unrecognized face images are saved for review.
 
 ---
-
-## 📁 Output Files
-
-* `attendancesheet.xlsx` — Rolling attendance tracking by date.
-* `attendance_export_YYYYMMDD_HHMMSS.xlsx` — Exported attendance snapshots.
-* `attendance_YYYYMMDD_HHMMSS.jpg` — Annotated detection images.
-
----
-
-## 📂 Additional (Google Drive Link)
-
-* Barebones version (`AIMain.py`) without the web interface is available here:
-  🔗 [Google Drive Folder](https://drive.google.com/drive/folders/1vozGF8MRHb9YXMWG15mFhOhxnr7FwBCN)
 
 ---
 
