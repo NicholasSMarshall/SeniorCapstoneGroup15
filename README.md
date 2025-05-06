@@ -75,8 +75,8 @@ SeniorCapstoneLocalhost - CapstoneApp
 
 ---
 Depending on which one you want to test, their prerequisites and steps will be in their respective directories
-├── CapstoneWebsite
-├── CapstoneApp
+### CapstoneWebsite
+### CapstoneApp
 
 ### 🧪 Running the Capstone App
 
