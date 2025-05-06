@@ -1,46 +1,64 @@
-# Senior Capstone Website
+# 🎓 Senior Capstone Website – Facial Recognition Attendance System
 
-This repository contains the full implementation and supporting files for our Senior Capstone Project. The project centers around a facial recognition system integrated with a lightweight website and database to simulate a simple access control or record-keeping platform.
+This repository contains the full implementation and documentation for our Senior Capstone Project — a facial recognition-based attendance tracking system with a web-based interface and database integration.
 
-## 🧠 Project Overview
+---
 
-The primary goal of this project is to create a secure, efficient facial recognition system with a graphical front-end for user interaction. This can be used for various applications such as check-in systems, secure logins, or personnel tracking.
+## 🫠 Overview
 
-The system uses Python and OpenCV to capture, train, and recognize faces. It stores and retrieves user records from a database and presents a user interface through a demo website hosted locally.
+The goal of this project is to create a secure, efficient facial recognition system with a graphical front-end. It can be adapted for:
+
+* Student attendance systems
+* Personnel check-ins
+* Secure login platforms
+
+The system uses Python, OpenCV, and DeepFace for recognition and integrates with a Flask web app and SQLite for data management.
 
 ---
 
 ## 💡 Features
 
-- ✅ Real-time facial recognition using OpenCV
-- ✅ Image dataset generation from webcam
-- ✅ Model training and face classification
-- ✅ SQLite database to store user metadata
-- ✅ Web interface (HTML/CSS/JavaScript) for demo purposes
-- ✅ Included presentation and documentation
+✅ Real-time facial recognition (OpenCV + DeepFace)
+✅ Image dataset generation and model training
+✅ SQLite database for user metadata
+✅ Web-based UI using Flask + HTML/CSS/JS
+✅ Excel attendance record generation
+✅ Auto-detection and classification of students
+✅ Included presentation and final documentation
 
 ---
 
-## 🗂 Repository Structure
+## 🗂️ Repository Structure
+
+```
 SeniorCapstoneWebsite/
+├── CaptureImages.py              # Captures face images for training
+├── TrainModel.py                 # Trains the recognizer with captured images
+├── FaceRecognition.py           # CLI-based real-time face recognition
 │
-├── CaptureImages.py # Captures face images for training
-├── TrainModel.py # Trains the recognizer with captured images
-├── FaceRecognition.py # Performs real-time face recognition
+├── app.py                        # Web-based Flask app with attendance logic
+├── students.xlsx                 # Student list (names should match image filenames)
+├── attendancesheet.xlsx         # Master attendance file (auto-generated)
 │
-├── Records.sql # SQL file to initialize or view user database
+├── database/                     # Known face images (1 image per student)
+├── uploads/                      # Temporary upload storage for test images
+├── recognized_faces/            # Cropped, recognized faces
+├── unrecognized_faces/          # Cropped, unrecognized faces
+├── static/
+│   └── attendance/              # Annotated attendance images
+├── templates/
+│   └── homepage.html            # Web interface
 │
-├── SeniorCapstoneDocumentation.docx # Final write-up of the project
-├── Presentation.pdf # Capstone presentation slides
+├── WebsiteDemo/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
 │
-├── WebsiteDemo/ # Demo files for the local website
-│ ├── index.html
-│ ├── style.css
-│ └── script.js
-│
-└── README.md # Project overview (this file)
-
-
+├── Records.sql                  # SQLite setup script
+├── Presentation.pdf             # Final capstone presentation
+├── SeniorCapstoneDocumentation.docx  # Project write-up
+└── README.md                    # This file
+```
 
 ---
 
@@ -48,110 +66,89 @@ SeniorCapstoneWebsite/
 
 ### 🛠 Prerequisites
 
-
-
 Make sure the following are installed:
 
-- Python 3.x
-- OpenCV: `pip install opencv-python`
-- SQLite or DB Browser for SQLite
-- Webcam (internal or external)
-- ultralytics
+* Python 3.9+
+* A webcam (internal/external)
+* SQLite or DB Browser for SQLite
+
+Install required Python libraries:
+
+```bash
+pip install Flask opencv-python deepface ultralytics pandas openpyxl XlsxWriter
+```
+
 ---
 
-### 🧪 How to Run
+### 🔧 Setup
 
-1. **Clone the Repository**
+1. **Clone the repository**
+
    ```bash
    git clone https://github.com/RPGNorman/SeniorCapstoneWebsite.git
    cd SeniorCapstoneWebsite
-   
-python FaceRecognition.py
+   ```
 
+2. **Prepare the student database**
 
-In googledrive 
-AIMain.py show the rw AI usage without graphics(barebone)
-## https://drive.google.com/drive/folders/1vozGF8MRHb9YXMWG15mFhOhxnr7FwBCN
-.
-├── app.py                    # Main application script
-├── templates/
-│   └── homepage.html         # Web interface
-├── uploads/                  # Temporary image uploads
-├── database/                 # Known face images
-├── recognized_faces/         # Successfully recognized face crops
-├── unrecognized_faces/       # Unrecognized face crops
-├── static/
-│   └── attendance/           # Annotated attendance images
-├── students.xlsx             # Excel sheet with student names
-├── attendancesheet.xlsx      # Automatically generated master attendance file
+   * Add one clear image per student to the `database/` folder.
+   * The filename (e.g., `Alice_Johnson.jpg`) should match exactly with the student’s name in `students.xlsx`.
 
-pip install these requirements
+3. **Create `students.xlsx`**
 
-Flask
-opencv-python
-deepface
-ultralytics
-pandas
-openpyxl
-xlsxwriter
+   ```plaintext
+   Student Name
+   Alice Johnson
+   Bob Smith
+   ...
+   ```
 
+---
 
-Install Python 3.9+
+### 🧪 Running the App
 
-Clone this repo
-
-Prepare the student database:
-
-Place one clear image per student in the database/ folder.
-
-The image filename (without extension) should match the name in students.xlsx.
-
-Create students.xlsx
-
-Include a column labeled "Student Name"
-
-Example:
-
-Student Name
-Alice Johnson
-Bob Smith
-
-Run the App
-
-bash
-Copy
-Edit
+```bash
 python app.py
-Access the Web App
+```
 
-Go to http://localhost:5000
+Visit `http://localhost:5000` in your browser.
 
-📷 How to Use
-Go to the homepage
+---
 
-Upload a group photo with students
+## 📷 How to Use
 
-Recognized students will be marked and saved
+1. Go to the homepage.
+2. Upload a group photo containing students.
+3. Recognized students will be marked in the image.
+4. Attendance is recorded in `attendancesheet.xlsx`.
+5. Cropped recognized/unrecognized face images are saved for review.
 
-A generated image with bounding boxes will appear
+---
 
-Attendance is automatically updated
+## 📁 Output Files
 
-📁 Output Files
-attendancesheet.xlsx: Daily updated sheet tracking attendance by student and date
+* `attendancesheet.xlsx` — Rolling attendance tracking by date.
+* `attendance_export_YYYYMMDD_HHMMSS.xlsx` — Exported attendance snapshots.
+* `attendance_YYYYMMDD_HHMMSS.jpg` — Annotated detection images.
 
-attendance_export_YYYYMMDD_HHMMSS.xlsx: Optional export files
+---
 
-attendance_YYYYMMDD_HHMMSS.jpg: Annotated photo of detections
+## 📂 Additional (Google Drive Link)
 
-✍️ TODO
-Finish manual attendance submission (/submit_manual_attendance)
+* Barebones version (`AIMain.py`) without the web interface is available here:
+  🔗 [Google Drive Folder](https://drive.google.com/drive/folders/1vozGF8MRHb9YXMWG15mFhOhxnr7FwBCN)
 
-Improve UI
+---
 
-Add user authentication (optional)
+## ✍️ TODO (Future Work)
 
-Display attendance history on web interface
+* [ ] Manual attendance submission page (`/submit_manual_attendance`)
+* [ ] Improve front-end UI and styling
+* [ ] Add user authentication
+* [ ] Display attendance history on the dashboard
 
-🔐 License
-This project is provided for educational purposes. Contact the author for commercial use.
+---
+
+## 🔐 License
+
+This project is intended for educational use only. Please contact the authors for any commercial or derivative use.
