@@ -63,10 +63,15 @@ SeniorCapstoneLocalhost - CapstoneApp
 │   ├── style.css
 │   └── script.js
 │
-├── Localhost Demo Files          # Link to the google drive of the files
-├── README.md                     # This file
-├── Records.sql                   # SQLite setup script
-└── Website Link for Demo         # Normal Link to the website 
+├── Capstone Documentation - CapstoneDocumentation
+│   ├── Group Information Stage 1-3.pdf # 3 pdfs for the group information
+│   ├── Stage 1-3_AI-Attendance.docx    # 3 docs for the reports
+│   └── Stage 1-3_AI-Attendance.pptx    # 3 presentations 
+│
+├── Localhost Demo Files                # Link to the google drive of the files
+├── README.md                           # This file
+├── Records.sql                         # SQLite setup script
+└── Website Link for Demo               # Normal Link to the website 
 ```
 
 ---
@@ -92,9 +97,9 @@ Visit `http://localhost:5000` in your browser.
 
 ## 🧪 Running the Capstone Website
 
-Log in at www.pythonanywhere.com/user/rpgmoose/ with the password provided in the directory
+Log in at 'www.pythonanywhere.com/user/rpgmoose/" with the password provided in the directory
 
-Normal website: https://www.pythonanywhere.com/user/rpgmoose/
+Normal website: "https://www.pythonanywhere.com/user/rpgmoose/"
 
 ---
 
