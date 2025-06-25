@@ -1,3 +1,5 @@
+============OUTDATED WILL NOT WORK UNLESS WITH SUBSCRIPTION===============
+
 Capstone Attendance Tracking System – PythonAnywhere Deployment
 This README provides a guide to accessing and testing our Flask-based attendance tracking system hosted on PythonAnywhere.
 
